@@ -5,21 +5,25 @@ const { authorize, login } = require('../middlewares/authUser');
 const cookie = require('cookie-parser');
 //require user
 const User = require('../models/userSchema');
+//require error handler
+const { errorHandler } = require('../service/errorService');
 //user display returned to view
 const projection = {
-        _id: 0,
-        password: 0,
-        userName: 0,
+    password: 0,
+    userName: 0,
 
-    }
-    // create new user controller
+};
+
+// create new user controller
+
 
 module.exports.createNewUser = async(req, res) => {
 
 
     try {
         const newUser = await User.create({
-            name: req.body.name,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             age: req.body.age,
             gender: req.body.gender,
             email: req.body.email,
@@ -32,13 +36,11 @@ module.exports.createNewUser = async(req, res) => {
         //create token and send to the user
         console.log(newUser._id)
         const token = await authorize(newUser._id);
-        res.cookie('jwt', token, { maxAge: 1000 * 3 * 24 * 60 * 60, httpOnly: true, secure: false });
+        res.cookie('jwt', token, { maxAge: 1000 * 3 * 24 * 60 * 60, httpOnly: true, secure: false, sameSite: "strict" });
         res.status(200).json({ "message": "user created sucessfully", payload: newUser, });
 
     } catch (err) {
-        const errMsg = err.message.split(" ");
-        console.log(errMsg)
-        res.status(500).json({ message: `${errMsg[errMsg.length - 3]} ${errMsg[errMsg.length - 2].slice(1,-1)} already exist!` })
+        res.status(500).json({ message: errorHandler(err, req.params.id) })
     }
 
 
@@ -47,13 +49,12 @@ module.exports.createNewUser = async(req, res) => {
 
 //fetch a single user
 module.exports.fetchSingleUser = async(req, res) => {
-        console.log("my cookie = ", req.cookies)
         try {
             const user = await User.findById(req.params.id, projection);
             if (!user) return res.status(404).json({ message: `user with id ${req.params.id} not found!` });
             return res.status(200).json({ message: "user found!", payload: user });
         } catch (err) {
-            if (err.name === "CastError") return res.status(404).json({ message: `user with id ${req.params.id} not found!` })
+            if (err.name === "CastError") return res.status(404).json({ message: errorHandler(err, req.params.id) })
             return res.status(500).json({ message: err })
 
         }
@@ -64,7 +65,7 @@ module.exports.fetchAllUsers = async(req, res) => {
         const users = await User.find({}, projection);
 
         if (users.length === 0) return res.status(404).json({ message: "No users found!" });
-        return res.status(200).json({ message: `${users.length} users found!`, payload: users });
+        return res.status(200).render('adminView/listUsers.ejs', { users });
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
@@ -86,16 +87,32 @@ module.exports.updateSingleUser = async(req, res) => {
 
 //delete single user
 module.exports.deleteSingleUser = async(req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) return res.status(404).json({ message: "user does not exist!" });
-        return res.status(200).json({ message: "user was successfully deleted", payload: user });
-    } catch (err) {
-        if (err.name === "CastError") return res.status(404).json({ message: `user with id ${req.params.id} not found!` })
-        return res.status(500).json({ message: err.message });
+        try {
+            const user = await User.findByIdAndDelete(req.params.id);
+            if (!user) return res.status(404).json({ message: "user does not exist!" });
+            return res.status(200).json({ message: "user was successfully deleted", payload: user });
+        } catch (err) {
+            if (err.name === "CastError") return res.status(404).json({ message: `user with id ${req.params.id} not found!` })
+            return res.status(500).json({ message: err.message });
+        }
     }
-}
+    //fetch users for duplicate check
+module.exports.fetchAllUsersForDuplicateCheck = async(req, res) => {
+    const { userCredential, credentialValue } = req.body;
 
+    const details = await User.find({
+        [credentialValue]: userCredential
+    }, {
+        [credentialValue]: 1
+    });
+    //check if the is no details
+    if (details.length == 0) {
+
+        return res.status(200).json({ message: "available" })
+    } else {
+        return res.status(200).json({ message: "taken" })
+    };
+};
 // [{
 //         "role": "not assigned",
 //         "name": "daddy broke",

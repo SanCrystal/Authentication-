@@ -11,22 +11,25 @@
 <body>
     <div class="container main">
         <header>
-            <div class="home">
-                <h1>Home</h1>
-            </div>
             <div class="wrapper">
                 <nav>
                     <ul class="nav-links">
                         <li class="home nav-1"><a href="/">home</a></li>
-                        <li class="login nav-1"><a href="signup">sign up</a></li>
                         <li class="login nav-1"><a href="login">login</a></li>
                         <li class="about nav-1"><a href="about">about</a></li>
                         <li class="blog nav-1"><a href="blog">blog</a></li>
                     </ul>
                 </nav>
             </div>
-        </header>
+            <div class="error">
+                <h1> 401 error</h1>
+                <h3>
+                    Status:
+                    <%= message%> !
+                </h3>
+            </div>
 
+        </header>
     </div>
 </body>
 
