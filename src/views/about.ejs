@@ -1,52 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 Content-Security-Policy default-src=self" async defer>
-    <link rel="stylesheet" href="css/styles.css">
-    <title>home</title>
-</head>
-
-<body>
-    <div class="container main">
-        <header>
-            <div class="wrapper">
-                <nav>
-                    <ul class="nav-links">
-                        <li class="home nav-1"><a href="/">home</a></li>
-                        <li class="login nav-1"><a href="signup">sign up</a></li>
-                        <li class="login nav-1"><a href="login">login</a></li>
-                        <li class="blog nav-1"><a href="blog">blog</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
+<%- include('partials/header');%>
+    <div class="about">
+        <h1>About</h1>
     </div>
-
-    <div class="title">
-        <h1>login </h1>
-    </div>
-    <div>
-        <form action="../../frontend/scripts/handleLoginForm.js">
-
-            <label for="email ">email</label>
-            <input type="email" name="email" class="email" required id="user-email ">
-            <div class="email-error"></div>
-
-
-            <label for="password ">password</label>
-            <input type="password" name="password" required class="password" id="user-password ">
-            <div class="password-error"></div>
-
-
-            <input type="submit" name="submit " id="user-submit " value="Login ">
-
-
-        </form>
-    </div>
-    <script type="text/javascript" src="scripts/handleLoginForm.js" defer></script>
-</body>
-
-</html>
+    <%- include('partials/footer');%>

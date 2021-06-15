@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const errorRoutes = require('./routes/errorRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const cookieParser = require('cookie-parser');
+const { isLoggedIn } = require('./middlewares/auth');
 const ejs = require('ejs');
 const path = require('path');
 require('dotenv').config();
@@ -28,7 +29,7 @@ app.use(cookieParser());
 //serving static files frontend
 // app.use(express.static('frontend'));
 app.use(express.static(path.join(__dirname, 'frontend')));
-app.all('*', function(req, res, next) {
+app.all('*', isLoggedIn, function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:5550");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
@@ -46,7 +47,13 @@ app.use(errorRoutes);
 app.use(adminRoutes)
     //set home route
 app.get('/', (req, res) => { res.render('index.ejs') });
+app.get('/about', (req, res) => { res.render('about.ejs') });
+app.get('/blog', (req, res) => { res.render('blog.ejs') });
 
 
 
 app.listen(PORT, () => console.log(`server up on port ${PORT}.`))
+
+
+//generate random strings crypto.randomBytes(size=20).toString('base64')
+// crypto.randomBytes(size=30).toString('base64')+crypto.randomBytes(size=30).toString('hex') for env secrets

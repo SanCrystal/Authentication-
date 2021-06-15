@@ -24,10 +24,13 @@ module.exports.isAuthorized = async(req, res, next) => {
     if (token) {
         const decodedToken = await decodeToken(token);
         const user = await User.findById(decodedToken.payload)
-        res.locals.email = user.email;
-        next()
-    } else {
+        if (user) {
+            res.locals.email = user.email;
+            next()
+        }
 
+    } else {
+        // res.locals.email = null;
         res.redirect('/login');
         // res.status(401).json({ message: "Access denied, must be logged in " });
     };
@@ -66,7 +69,27 @@ module.exports.login_post = async(req, res, next) => {
 module.exports.logout = (req, res) => {
     //send cookie to the client 
     res.cookie("jwt", '', { maxAge: 1, httpOnly: true, secure: false });
-    res.status(200).json({ message: "login succesful..." })
+    res.redirect('/');
+};
+//check login status
+module.exports.isLoggedIn = async(req, res, next) => {
+    //get the user valid token
+    const token = req.cookies.jwt;
+
+    //verify the token if there is one
+    if (token) {
+        const decodedToken = await decodeToken(token);
+        const user = await User.findById(decodedToken.payload)
+        if (user) {
+            res.locals.name = user.email.split("@")[0];
+            next();
+        }
+
+    } else {
+        res.locals.name = null;
+        next();
+        // res.status(401).json({ message: "Access denied, must be logged in " });
+    };
 };
 //not assigned
 module.exports.notAssignedAuth = (req, res, next) => {

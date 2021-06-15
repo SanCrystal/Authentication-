@@ -1,6 +1,6 @@
 //createNewUser fetchAllUsers fetchSingleUser updateUser 
 //require authuser
-const { authorize, login } = require('../middlewares/authUser');
+const { authorize, login } = require('../middlewares/auth');
 //require cookie parser
 const cookie = require('cookie-parser');
 //require user
@@ -34,10 +34,10 @@ module.exports.createNewUser = async(req, res) => {
             role: req.body.role
         });
         //create token and send to the user
-        console.log(newUser._id)
         const token = await authorize(newUser._id);
         res.cookie('jwt', token, { maxAge: 1000 * 3 * 24 * 60 * 60, httpOnly: true, secure: false, sameSite: "strict" });
-        res.status(200).json({ "message": "user created sucessfully", payload: newUser, });
+        res.status(200).json({ message: `${newUser.userName} created successfully.` })
+
 
     } catch (err) {
         res.status(500).json({ message: errorHandler(err, req.params.id) })

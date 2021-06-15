@@ -30,10 +30,18 @@ const userSchema = new Schema({
 }, { timestamps: true, strict: true });
 
 userSchema.pre('save', async function(next) {
-
+    const roleChoice = ['tutor', 'student']
+    roleChoice.forEach(role => {
+        if (this.role === role) {
+            this.role = role;
+        } else {
+            this.role = "not assigned"
+        }
+    });
     this.password = await encrypt(this.password);
     next();
 });
+
 userSchema.statics.findUser = async function(email, password) {
     //check if user exist in db
     const user = await this.findOne({ email });

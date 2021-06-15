@@ -1,7 +1,7 @@
 //require router from the express router
 const router = require('express').Router();
 //require auth middleware
-const { notAssignedAuth, studentAuth, moderatorAuth, tutorAuth, adminAuth } = require('../middlewares/authUser');
+const { notAssignedAuth, studentAuth, moderatorAuth, tutorAuth, adminAuth } = require('../middlewares/auth');
 
 //require book controller
 const { createNewBook, fetchSingleBook, fetchAllBooks, updateSingleBook, deleteSingleBook } = require('../controllers/bookController');

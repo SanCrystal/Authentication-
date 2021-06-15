@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 ">
-    <link rel=" stylesheet " href="css/styles.css ">
-    <title>register</title>
-</head>
-
-<body>
-    <div class="container main">
-        <header>
-            <div class="wrapper ">
-                <nav>
-                    <ul class="nav-links">
-                        <li class="home nav-1"><a href="/">home</a></li>
-                        <li class="login nav-1"><a href="login">login</a></li>
-                        <li class="about nav-1"><a href="about">about</a></li>
-                        <li class="blog nav-1"><a href="blog">blog</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
+<%- include('../partials/header');%>
     </div>
 
     <div class="title">
@@ -71,6 +47,4 @@
     <script type="text/javascript " src="scripts/checkDuplicateCredentials.js " defer></script>
     <script type="text/javascript " src="scripts/handleSignupForm.js " defer></script>
 
-</body>
-
-</html>
+    <%- include('../partials/footer');%>

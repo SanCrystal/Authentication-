@@ -54,5 +54,5 @@ module.exports.assignRole = async(id, role) => {
 };
 //get the dash board
 module.exports.getDashBoard = (req, res) => {
-    res.status(200).render('adminView/dashboard.ejs')
+    res.status(200).render('adminView/dashboard.ejs', { data: { status: "loggedIn" } })
 }

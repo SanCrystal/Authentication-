@@ -23,10 +23,12 @@ form.addEventListener('submit', async e => {
             method: 'POST',
             body: JSON.stringify({ firstName, lastName, userName, age, gender, phoneNumber, email, password, role, imageUrl })
         });
-        const data = await res
-            //redirects user to the 404 not found page
+        const data = await res.json();
+        //redirects user to the 404 not found page
+
+        console.log("handle signup : ", res.status, data)
         if (res.status === 404) {
-            return location.assign(res.url + "&access=denied");
+            return location.assign("/404" + "&status=denied");
         }
         //redirects user afer successful login to the homepage
 
@@ -34,7 +36,12 @@ form.addEventListener('submit', async e => {
             //clear input form
             form.email.value = "";
             form.password.value = "";
-            return location.assign(res.url);
+
+            setTimeout(() => {
+                alert(data.message)
+            }, 1000);
+
+            return location.assign("/");
         }
     } catch (err) {
         console.log(err)

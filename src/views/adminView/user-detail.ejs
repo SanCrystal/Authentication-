@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-</head>
-
-<body>
-    <div class="container main">
-        <header>
-            <div class="wrapper">
-                <nav>
-                    <ul class="nav-links">
-                        <li class="home nav-1"><a href="/src/views/index.ejs">home</a></li>
-                        <li class="login nav-1"><a href="/src/views/login.ejs">login</a></li>
-                        <li class="about nav-1"><a href="/src/views/about.ejs">about</a></li>
-                        <li class="blog nav-1"><a href="/src/views/blog.ejs">blog</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="details">
-                <h1> User</h1>
-            </div>
-            <ul class="user-detail">
-
-                <li class="user name">
-                    <span>name : <%=user.name %></span>
-                </li>
-                <li class="user email">
-                    <span>email : <%=user.email %></span>
-                </li>
-                <li class="user age">
-                    <span>age: <%=user.age%></span>
-                </li>
-
-            </ul>
-        </header>
+<%- include('../partials/header');%>
+    <div class="details">
+        <h1> User</h1>
     </div>
-</body>
+    <ul class="user-detail">
 
-</html>
+        <li class="user name">
+            <span>name : <%=user.name %></span>
+        </li>
+        <li class="user email">
+            <span>email : <%=user.email %></span>
+        </li>
+        <li class="user age">
+            <span>age: <%=user.age%></span>
+        </li>
+
+    </ul>
+    </div>
+
+    <%- include('../partials/footer');%>

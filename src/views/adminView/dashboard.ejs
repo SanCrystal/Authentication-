@@ -14,15 +14,20 @@
             <div class="wrapper">
                 <nav>
                     <ul class="nav-links">
-                        <li class="home nav-1"><a href="/src/views/index.ejs">home</a></li>
-                        <li class="login nav-1"><a href="/src/views/login.ejs">login</a></li>
-                        <li class="about nav-1"><a href="/src/views/about.ejs">about</a></li>
-                        <li class="blog nav-1"><a href="/src/views/blog.ejs">blog</a></li>
+                        <li class="home nav-1"><a href="/">home</a></li>
+                        <li class="about nav-1"><a href="/about">about</a></li>
+                        <li class="blog nav-1"><a href="/blog">blog</a></li>
+                        <% if(data.status !== "loggedIn"){ %>
+                            <li class="login nav-1"><a href="/login">login</a></li>
+                            <%}%>
+                                <% if(data.status !== "notLoggedIn"){%>
+                                    <li class="logout nav-1"><a href="/logout">logout</a></li>
+                                    <%}%>
                     </ul>
                 </nav>
             </div>
             <div class="dashboard">
-                <h1>Dashboard</h1>
+                <h1>Amin Dashboard</h1>
             </div>
 
         </header>
